@@ -1,0 +1,23 @@
+name: Build and validate
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  dsp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+      - run: cmake --build build --parallel 2
+      - run: ctest --test-dir build --output-on-failure
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build -DD2NZ_BUILD_PLUGIN=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64
+      - run: cmake --build build --parallel 2
+      - run: ctest --test-dir build --output-on-failure
+      - uses: actions/upload-artifact@v4
+        with:
+          name: D2NZ-Vocal-Lab-macOS-development
+          path: |
+            build/D2NZVocalLab_artefacts/Release/AU/*.component
+            build/D2NZVocalLab_artefacts/Release/VST3/*.vst3
