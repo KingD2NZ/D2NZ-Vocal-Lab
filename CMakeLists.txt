@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
-project(D2NZVocalLab VERSION 0.1.0 LANGUAGES CXX)
+# JUCE's plugin wrappers include C sources. Enable C at the top level so
+# CMake's compile rules are also available outside FetchContent's scope.
+project(D2NZVocalLab VERSION 0.1.0 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 option(D2NZ_BUILD_PLUGIN "Build JUCE plugin (requires platform SDKs and JUCE licence review)" OFF)
